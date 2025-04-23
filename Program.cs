@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Dynamic;
 
 namespace Mini_Bank_System
@@ -173,7 +174,10 @@ namespace Mini_Bank_System
 
         static void ViweRequest()
         {
-            Console.WriteLine("View Requests");
+            foreach(string review in reviewsStack)
+            {
+                Console.WriteLine(review);
+            }
 
         }
         static void ViewAccounts()
@@ -246,7 +250,16 @@ namespace Mini_Bank_System
         }
         static void SubmitReview()
         {
-            Console.WriteLine("Submit Review");
+            Console.WriteLine("please write your Review :");
+            string reivew = Console.ReadLine();
+            if (reivew == "")
+            {
+                return;
+            }
+            else { 
+                reviewsStack.Push(reivew);
+                Console.WriteLine("Review submited");
+            }
         }
 
         //========== checkAccount avalibality ======
