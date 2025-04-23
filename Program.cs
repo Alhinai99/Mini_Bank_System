@@ -1,4 +1,5 @@
-﻿using System.Dynamic;
+﻿using System;
+using System.Dynamic;
 
 namespace Mini_Bank_System
 {
@@ -210,29 +211,29 @@ namespace Mini_Bank_System
         }
         static void Deposit()
         {
+            Console.WriteLine("==============");
             Console.WriteLine("Deposit");
             Console.WriteLine("==============");
 
             int accountIndex = CheckAccount();
             if (accountIndex != -1)
             {
-                Console.WriteLine("Please Enter the amount you Want to deposit : ");
-                double amount = double.Parse(Console.ReadLine());
-                for (int i = 0; i < balances.Count; i++)
+                Console.Write("Enter deposit amount: ");
+                double amount = Convert.ToDouble(Console.ReadLine());
+
+                if (amount <= 0)
                 {
-                    if (balances[i] == accountIndex)
-                    {
-                       balances[i]= balances[i] + amount;
-                        Console.WriteLine("money deposite"+ amount+ "in account :" + accountNumbers[i] + "the new Amount: " + balances[i]);
-
-                    }
-
+                    Console.WriteLine("invaild amount");
+                    return;
                 }
-                
+
+                balances[accountIndex] += amount;
+                Console.WriteLine("Deposit successful in account : " + accountNames[accountIndex]+ "with amount :" + amount + "new balance :" + balances[accountIndex]);
             }
-
-
         }
+
+
+        
         static void checkBalance()
         {
             int index = CheckAccount();
