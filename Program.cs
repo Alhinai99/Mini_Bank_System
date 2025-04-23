@@ -211,11 +211,11 @@
             Console.WriteLine("Deposit");
             Console.WriteLine("==============");
             Console.WriteLine("Please Enter account number");
-            string 
+            double AccountID = double.Parse(Console.ReadLine());
+            bool ValidAccount = CheckAccount(AccountID);
             Console.WriteLine("Please Enter the amount you Want to deposit : ");
             double amount = double.Parse(Console.ReadLine());
-            
-            balances = amount + balances;
+
 
         }
         static void checkBalance()
@@ -228,8 +228,19 @@
         }
 
 
-        
+        static bool CheckAccount(double AccountID)
+        {
+            for (int i = 0; i < accountNumbers.Count; i++)
+            {
+                if (AccountID == accountNumbers[i])  
+                {
+                    return true; d
+                }
+            }
+            return false;
 
 
-    }
+
+
+        }
 }
