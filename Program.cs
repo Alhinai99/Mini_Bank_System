@@ -1,4 +1,6 @@
-﻿namespace Mini_Bank_System
+﻿using System.Dynamic;
+
+namespace Mini_Bank_System
 {
     internal class Program
     {
@@ -11,7 +13,7 @@
         static List<int> accountNumbers = new List<int>();
         static List<string> accountNames = new List<string>();
         static List<double> balances = new List<double>();
-   
+
         static Queue<string> createAccount = new Queue<string>(); // format: "Name|NationalID"
         static Stack<string> reviewsStack = new Stack<string>();
 
@@ -25,7 +27,7 @@
             systemStart();
         }
         // =========== Main Menu ========================
-        static void WelcomeMessage() 
+        static void WelcomeMessage()
         {
             Console.WriteLine("=========================================");
             Console.WriteLine("Welcome to the Mini Bank System");
@@ -45,7 +47,7 @@
         static void systemStart()
         {
             bool ExitSystem = true;
-            
+
             while (ExitSystem != false)
             {
 
@@ -171,7 +173,7 @@
         static void ViweRequest()
         {
             Console.WriteLine("View Requests");
-            
+
         }
         static void ViewAccounts()
         {
@@ -192,7 +194,7 @@
 
         static void CreateAccount()
         {
-            
+
             Console.WriteLine("Create Account");
             Console.WriteLine("============");
             Console.WriteLine("Enter Your Name: ");
@@ -210,37 +212,64 @@
         {
             Console.WriteLine("Deposit");
             Console.WriteLine("==============");
-            Console.WriteLine("Please Enter account number");
-            double AccountID = double.Parse(Console.ReadLine());
-            bool ValidAccount = CheckAccount(AccountID);
-            Console.WriteLine("Please Enter the amount you Want to deposit : ");
-            double amount = double.Parse(Console.ReadLine());
+
+            int accountIndex = CheckAccount();
+            if (accountIndex != -1)
+            {
+                Console.WriteLine("Please Enter the amount you Want to deposit : ");
+                double amount = double.Parse(Console.ReadLine());
+                for (int i = 0; i < balances.Count; i++)
+                {
+                    if (balances[i] == accountIndex)
+                    {
+                       balances[i]= balances[i] + amount;
+                        Console.WriteLine("money deposite"+ amount+ "in account :" + accountNumbers[i] + "the new Amount: " + balances[i]);
+
+                    }
+
+                }
+                
+            }
 
 
         }
         static void checkBalance()
         {
-            Console.WriteLine("Check Balance");
+            int index = CheckAccount();
+            if (index == -1) return;
+
+            Console.WriteLine($"Account Number: {accountNumbers[index]}");
+            Console.WriteLine($"Holder Name: {accountNames[index]}");
+            Console.WriteLine($"Current Balance: {balances[index]}");
+
         }
         static void SubmitReview()
         {
             Console.WriteLine("Submit Review");
         }
 
-
-        static bool CheckAccount(double AccountID)
+        //========== checkAccount avalibality ======
+        static int CheckAccount()
         {
-            for (int i = 0; i < accountNumbers.Count; i++)
+            Console.Write("Enter account number: ");
+            try
             {
-                if (AccountID == accountNumbers[i])  
+                int accNum = Convert.ToInt32(Console.ReadLine());
+                int index = accountNumbers.IndexOf(accNum);
+
+                if (index == -1)
                 {
-                    return true; d
+                    Console.WriteLine("Account not found.");
+                    return -1;
                 }
+
+                return index;
             }
-            return false;
-
-
-
-
+            catch
+            {
+                Console.WriteLine("Invalid input.");
+                return -1;
+            }
         }
+    }
 }
