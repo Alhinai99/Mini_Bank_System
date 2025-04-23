@@ -174,20 +174,32 @@ namespace Mini_Bank_System
 
         static void ViweRequest()
         {
-            foreach(string review in reviewsStack)
-            {
-                Console.WriteLine(review);
-            }
+
+            
+                foreach (string request in createAccount)
+                {
+                    string[] parts = request.Split('|');
+                    Console.WriteLine($"Name: {parts[0]}, National ID: {parts[1]}");
+                }
+            
 
         }
         static void ViewAccounts()
         {
-            Console.WriteLine("View Accounts");
+            for (int i = 0; i < accountNumbers.Count; i++)
+            {
+                Console.WriteLine("account number :" +accountNumbers[i]);
+                Console.WriteLine("account name : "+ accountNames[i]);
+                Console.WriteLine("Balance :"+balances[i]);
+            }
 
         }
         static void ViewReviews()
         {
-            Console.WriteLine("View Reviews");
+            foreach (string review in reviewsStack)
+            {
+                Console.WriteLine(review);
+            }
         }
         static void ProcessRequest()
         {
@@ -244,7 +256,7 @@ namespace Mini_Bank_System
             if (index == -1) return;
 
             Console.WriteLine($"Account Number: {accountNumbers[index]}");
-            Console.WriteLine($"Holder Name: {accountNames[index]}");
+            Console.WriteLine($"Name: {accountNames[index]}");
             Console.WriteLine($"Current Balance: {balances[index]}");
 
         }
