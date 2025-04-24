@@ -7,20 +7,20 @@ namespace Mini_Bank_System
     internal class Program
     {
         // ======Constants====
-        const double MinimumBalance = 100.0;
-        const string AccountsFilePath = "accounts.txt";
-        const string ReviewsFilePath = "reviews.txt";
+        const double MinimumBalance = 100.0; // minimum balance (account cant get lower )
+        const string AccountsFilePath = "accounts.txt"; //saving accounts in file
+        const string ReviewsFilePath = "reviews.txt"; //saving reviews in file
 
         //========== Global lists (parallel)==========
-        static List<int> accountNumbers = new List<int>();
-        static List<string> accountNames = new List<string>();
-        static List<double> balances = new List<double>();
+        static List<int> accountNumbers = new List<int>(); // account numbers list
+        static List<string> accountNames = new List<string>(); // account names list
+        static List<double> balances = new List<double>(); // account balances list
 
-        static Queue<string> createAccount = new Queue<string>(); // format: "Name|NationalID"
-        static Stack<string> reviewsStack = new Stack<string>();
+        static Queue<string> createAccount = new Queue<string>(); // "Name|NationalID"
+        static Stack<string> reviewsStack = new Stack<string>(); // reviews stack
 
         // ======Account number generator=====
-        static int lastAccountNumber;
+        static int lastAccountNumber; //used to give accounts a number 
 
 
         static void Main(string[] args)
@@ -29,6 +29,9 @@ namespace Mini_Bank_System
             systemStart();
         }
         // =========== Main Menu ========================
+        //===========================================
+
+        // Welcome Message
         static void WelcomeMessage()
         {
             Console.WriteLine("=========================================");
@@ -46,6 +49,7 @@ namespace Mini_Bank_System
             Console.WriteLine("   ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀   ");
 
         }
+        //system start function
         static void systemStart()
         {
             bool ExitSystem = true;
@@ -80,7 +84,7 @@ namespace Mini_Bank_System
             }
         }
 
-        // =========== Admin Menu ========================
+        // Admin Menu
         static void Admin()
         {
             bool AdminMenu = false;
@@ -127,7 +131,7 @@ namespace Mini_Bank_System
             }
         }
 
-        // =========== User Menu ========================
+        // User Menu 
         static void User()
         {
             bool UserMenu = false;
@@ -139,9 +143,10 @@ namespace Mini_Bank_System
                 Console.WriteLine("===========================");
                 Console.WriteLine("|   [1]     | Create Account |");
                 Console.WriteLine("|   [2]     | Deposit        |");
-                Console.WriteLine("|   [3]     | Check Balance  |");
-                Console.WriteLine("|   [4]     | Submit Review  |");
-                Console.WriteLine("|   [5]     | Exit           |");
+                Console.WriteLine("|   [3]     | withdraw       |");
+                Console.WriteLine("|   [4]     | Check Balance  |");
+                Console.WriteLine("|   [5]     | Submit Review  |");
+                Console.WriteLine("|   [6]     | Exit           |");
                 Console.WriteLine("============================");
                 string option = Console.ReadLine();
                 switch (option)
@@ -152,13 +157,17 @@ namespace Mini_Bank_System
                     case "2":
                         Deposit();
                         break;
-                    case "3":
+                    case"3":
+                        Withdraw();
+                        break;
+
+                    case "4":
                         checkBalance();
                         break;
-                    case "4":
+                    case "5":
                         SubmitReview();
                         break;
-                    case "5":
+                    case "6":
                         UserMenu = true;
                         Console.Clear();
                         break;
@@ -171,7 +180,9 @@ namespace Mini_Bank_System
 
 
         // =========== Admin Functions ========================
+        //====================================================
 
+        // View Requests
         static void ViweRequest()
         {
 
@@ -188,6 +199,7 @@ namespace Mini_Bank_System
 
 
         }
+        // View Accounts
         static void ViewAccounts()
         {
             for (int i = 0; i < accountNumbers.Count; i++)
@@ -201,6 +213,7 @@ namespace Mini_Bank_System
             }
 
         }
+        // View Reviews
         static void ViewReviews()
         {
             foreach (string review in reviewsStack)
@@ -211,6 +224,7 @@ namespace Mini_Bank_System
                 Console.Clear();
             }
         }
+        // Process Requests
         static void ProcessRequest()
         {
             if (createAccount.Count == 0)
@@ -241,6 +255,8 @@ namespace Mini_Bank_System
 
 
         // =========== User Functions ========================
+        //====================================================
+
 
         static void CreateAccount()
         {
@@ -279,16 +295,37 @@ namespace Mini_Bank_System
                     Console.WriteLine("invaild amount");
                     return;
                 }
-
+              
                 balances[accountIndex] += amount;
                 Console.WriteLine("Deposit successful in account : " + accountNames[accountIndex]+ " with amount :" + amount + " new balance :" + balances[accountIndex]);
                 Console.ReadLine();
                 Console.Clear();
             }
         }
+        static void Withdraw()
+        {
+            Console.WriteLine("==============");
+            Console.WriteLine("Withdraw");
+            Console.WriteLine("==============");
+            int accountIndex = CheckAccount();
+            if (accountIndex != -1)
+            {
+                Console.Write("Enter withdraw amount: ");
+                double amount = Convert.ToDouble(Console.ReadLine());
+                if (amount <= 0 || amount > balances[accountIndex] || balances[accountIndex]-amount < MinimumBalance)
+                {
+                    Console.WriteLine("Invalid amount.");
+                    return;
+                }
+                balances[accountIndex] -= amount;
+                Console.WriteLine($"Withdrawal successful. New balance: {balances[accountIndex]}");
+                Console.ReadLine();
+                Console.Clear();
+            }
+        }
 
 
-        
+
         static void checkBalance()
         {
             int index = CheckAccount();
@@ -315,22 +352,27 @@ namespace Mini_Bank_System
             }
         }
 
+
+
+
+
         //========== checkAccount avalibality ======
+        //=========================================
         static int CheckAccount()
         {
             Console.Write("Enter account number: ");
             try
             {
-                int accNum = Convert.ToInt32(Console.ReadLine());
-                int index = accountNumbers.IndexOf(accNum);
+                int accNum = Convert.ToInt32(Console.ReadLine()); //input account number
+                int index = accountNumbers.IndexOf(accNum); // get index of account number
 
-                if (index == -1)
+                if (index == -1) // account not found
                 {
                     Console.WriteLine("Account not found.");
                     return -1;
                 }
 
-                return index;
+                return index; // account found (return the index number of the account)
             }
             catch
             {
