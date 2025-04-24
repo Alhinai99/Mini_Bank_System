@@ -35,9 +35,9 @@ namespace Mini_Bank_System
             Console.WriteLine("Welcome to the Mini Bank System");
             Console.WriteLine("=========================================");
             Console.WriteLine("        ▄████▄        ");
-            Console.WriteLine("      ▄▀      ▀▄      ");
-            Console.WriteLine("     █  BANK   █     ");
-            Console.WriteLine("     █▄▄▄▄▄▄▄▄▄█     ");
+            Console.WriteLine("      ▄▀       ▀▄      ");
+            Console.WriteLine("     █   BANK   █     ");
+            Console.WriteLine("     █▄▄▄▄▄▄▄▄ ▄█     ");
             Console.WriteLine("     █   █  █   █    ");
             Console.WriteLine("     █   █  █   █    ");
             Console.WriteLine("     █   █  █   █    ");
@@ -180,8 +180,12 @@ namespace Mini_Bank_System
                 {
                     string[] parts = request.Split('|');
                     Console.WriteLine($"Name: {parts[0]}, National ID: {parts[1]}");
-                }
-            
+                    Console.WriteLine("====================================");
+                 }
+
+            Console.ReadLine();
+            Console.Clear();
+
 
         }
         static void ViewAccounts()
@@ -189,8 +193,11 @@ namespace Mini_Bank_System
             for (int i = 0; i < accountNumbers.Count; i++)
             {
                 Console.WriteLine("account number :" +accountNumbers[i]);
-                Console.WriteLine("account name : "+ accountNames[i]);
+                Console.WriteLine(" Name : "+ accountNames[i]);
                 Console.WriteLine("Balance :"+balances[i]);
+                Console.WriteLine("====================================");
+                Console.ReadLine();
+                Console.Clear();
             }
 
         }
@@ -199,11 +206,37 @@ namespace Mini_Bank_System
             foreach (string review in reviewsStack)
             {
                 Console.WriteLine(review);
+                Console.WriteLine("====================================");
+                Console.ReadLine();
+                Console.Clear();
             }
         }
         static void ProcessRequest()
         {
-            Console.WriteLine("Process Requests");
+            if (createAccount.Count == 0)
+            {
+                Console.WriteLine("No pending account requests.");
+                Console.ReadLine();
+                Console.Clear();
+                return;
+            }
+
+            string request = createAccount.Dequeue();
+            string[] parts = request.Split('|');
+            string name = parts[0];
+            string nationalID = parts[1];
+
+            int newAccountNumber = lastAccountNumber + 1;
+
+            accountNumbers.Add(newAccountNumber);
+            accountNames.Add(name);
+            balances.Add(0.0);
+
+            lastAccountNumber = newAccountNumber;
+
+            Console.WriteLine($"Account created for {name} with Account Number: {newAccountNumber}");
+            Console.ReadLine();
+            Console.Clear();
         }
 
 
@@ -222,6 +255,10 @@ namespace Mini_Bank_System
             string Request = Name + "|" + ID;
 
             createAccount.Enqueue(Request);
+            Console.WriteLine("Account request submitted successfully.");
+            Console.WriteLine("Please wait for admin approval.");
+            Console.ReadLine();
+            Console.Clear();
 
 
         }
@@ -244,7 +281,9 @@ namespace Mini_Bank_System
                 }
 
                 balances[accountIndex] += amount;
-                Console.WriteLine("Deposit successful in account : " + accountNames[accountIndex]+ "with amount :" + amount + "new balance :" + balances[accountIndex]);
+                Console.WriteLine("Deposit successful in account : " + accountNames[accountIndex]+ " with amount :" + amount + " new balance :" + balances[accountIndex]);
+                Console.ReadLine();
+                Console.Clear();
             }
         }
 
@@ -258,6 +297,8 @@ namespace Mini_Bank_System
             Console.WriteLine($"Account Number: {accountNumbers[index]}");
             Console.WriteLine($"Name: {accountNames[index]}");
             Console.WriteLine($"Current Balance: {balances[index]}");
+            Console.ReadLine();
+            Console.Clear();
 
         }
         static void SubmitReview()
