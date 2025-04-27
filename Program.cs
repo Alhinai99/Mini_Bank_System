@@ -246,20 +246,18 @@ namespace Mini_Bank_System
         {
             try
             {
-                if (createAccount.Count == 0) // check if there is reuquests by checking the count of (creatAccount)
+                if (accountNumbers.Count == 0)
                 {
-                    Console.WriteLine("No pending account requests.");
+                    Console.WriteLine("No accounts available.");
                 }
                 else
                 {
-                    foreach (string request in createAccount) // loop through the requests
+                    for (int i = 0; i < accountNumbers.Count; i++) // loop to view the accounts lists
                     {
-                        string[] parts = request.Split('|'); // split the request into name and national ID by "|"
-                        if (parts.Length >= 2)
-                        {
-                            Console.WriteLine($"Name: {parts[0]}, National ID: {parts[1]}");
-                            Console.WriteLine("====================================");
-                        }
+                        Console.WriteLine("account number :" + accountNumbers[i]);
+                        Console.WriteLine(" Name : " + accountNames[i]);
+                        Console.WriteLine("Balance :" + balances[i]);
+                        Console.WriteLine("====================================");
                     }
                 }
                 Console.ReadLine();
@@ -267,9 +265,11 @@ namespace Mini_Bank_System
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error viewing requests: {ex.Message}");
+                Console.WriteLine($"Error viewing accounts: {ex.Message}");
             }
         }
+
+        
         // View Reviews
         static void ViewReviews()
         {
@@ -597,14 +597,22 @@ namespace Mini_Bank_System
 
         static void SaveRequests()
         {
-            using (StreamWriter writer = new StreamWriter(RequestFilePath)) // save the requests in the file
+            try
             {
-                foreach (string request in createAccount)
+                using (StreamWriter writer = new StreamWriter(RequestFilePath)) // save the requests in the file
                 {
-                    writer.WriteLine(request); // add the request to the file
+                    foreach (string request in createAccount)
+                    {
+                        writer.WriteLine(request); // add the request to the file
+                    }
                 }
+                Console.WriteLine("Requests saved successfully.");
             }
-            Console.WriteLine("Requests saved successfully.");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving requests: {ex.Message}");
+            }
+
         }
 
         static void LoadRequests() // load the requests from the file
