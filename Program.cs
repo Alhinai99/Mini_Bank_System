@@ -273,12 +273,28 @@ namespace Mini_Bank_System
         // View Reviews
         static void ViewReviews()
         {
-            foreach (string review in reviewsStack) // loop to view the reviews
+            try
             {
-                Console.WriteLine(review);
-                Console.WriteLine("====================================");
+                if (accountNumbers.Count == 0) // check if there is no accounts
+                {
+                    Console.WriteLine("No accounts available.");
+                }
+                else
+                {
+                    for (int i = 0; i < accountNumbers.Count; i++) // loop to view the accounts lists
+                    {
+                        Console.WriteLine("account number :" + accountNumbers[i]);
+                        Console.WriteLine(" Name : " + accountNames[i]);
+                        Console.WriteLine("Balance :" + balances[i]);
+                        Console.WriteLine("====================================");
+                    }
+                }
                 Console.ReadLine();
                 Console.Clear();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error viewing accounts: {ex.Message}");
             }
         }
         // Process Requests
