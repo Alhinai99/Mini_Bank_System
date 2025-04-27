@@ -490,15 +490,24 @@ namespace Mini_Bank_System
         }
         static void SubmitReview()
         {
-            Console.WriteLine("please write your Review :");
-            string reivew = Console.ReadLine();
-            if (reivew == "") //if the input was empty exit return
+            try
             {
-                return;
+                Console.WriteLine("Please write your Review:");
+                string review = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(review)) //if the input was empty exit return
+                {
+                    Console.WriteLine("Review cannot be empty.");
+                    return;
+                }
+                else
+                {
+                    reviewsStack.Push(review); // add the review to a stack
+                    Console.WriteLine("Review submitted");
+                }
             }
-            else { 
-                reviewsStack.Push(reivew); // add the review to a stack
-                Console.WriteLine("Review submited");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error submitting review: {ex.Message}");
             }
         }
 
