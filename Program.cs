@@ -348,20 +348,40 @@ namespace Mini_Bank_System
         static void CreateAccount() 
         {
 
-            Console.WriteLine("Create Account");
-            Console.WriteLine("============");
-            Console.WriteLine("Enter Your Name: ");
-            string Name = Console.ReadLine();
-            Console.WriteLine("Enter Your National ID : ");
-            string ID = Console.ReadLine();
+            try
+            {
+                Console.WriteLine("Create Account");
+                Console.WriteLine("============");
+                Console.WriteLine("Enter Your Name: ");
+                string Name = Console.ReadLine();
 
-            string Request = Name + "|" + ID; // save the name and the ID together and split between them using '|'
+                if (string.IsNullOrWhiteSpace(Name)) // check if the name is empty
+                {
+                    Console.WriteLine("Name cannot be empty.");
+                    return;
+                }
 
-            createAccount.Enqueue(Request); // add the request in queue (createAccount)
-            Console.WriteLine("Account request submitted successfully.");
-            Console.WriteLine("Please wait for admin approval.");
-            Console.ReadLine();
-            Console.Clear();
+                Console.WriteLine("Enter Your National ID : ");
+                string ID = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(ID)) // check if the ID is empty
+                {
+                    Console.WriteLine("National ID cannot be empty.");
+                    return;
+                }
+
+                string Request = Name + "|" + ID; // save the name and the ID together and split between them using '|'
+
+                createAccount.Enqueue(Request); // add the request in queue (createAccount)
+                Console.WriteLine("Account request submitted successfully.");
+                Console.WriteLine("Please wait for admin approval.");
+                Console.ReadLine();
+                Console.Clear();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating account request: {ex.Message}");
+            }
 
 
         }
