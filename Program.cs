@@ -25,11 +25,20 @@ namespace Mini_Bank_System
 
         static void Main(string[] args)
         {
-            LoadAccounts(); // load accounts from file
-            LoadRequests(); // load requests from file
-            LoadReviews(); // load requests from file
-            WelcomeMessage(); // welcome message
-            systemStart(); // start the system
+            try
+            {
+                LoadAccounts(); // load accounts from file
+                LoadRequests(); // load requests from file
+                LoadReviews(); // load requests from file
+                WelcomeMessage(); // welcome message
+                systemStart(); // start the system
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A critical error occurred: {ex.Message}");
+                Console.WriteLine("The application will now exit.");
+                Environment.Exit(1);
+            }
         }
         // =========== Main Menu ========================
         //===========================================
@@ -403,11 +412,13 @@ namespace Mini_Bank_System
 
         static void SaveAccounts()
         {
-            using (StreamWriter writer = new StreamWriter(AccountsFilePath))
+            using (StreamWriter writer = new StreamWriter(AccountsFilePath))   
             {
-                for (int i = 0; i < accountNumbers.Count; i++)
                 {
-                    writer.WriteLine($"{accountNumbers[i]}|{accountNames[i]}|{balances[i]}");
+                    for (int i = 0; i < accountNumbers.Count; i++)
+                    {
+                        writer.WriteLine($"{accountNumbers[i]}|{accountNames[i]}|{balances[i]}");// Save each account's details in the format: AccountNumber|AccountName|Balance
+                    }
                 }
             }
             Console.WriteLine("Accounts saved successfully.");
@@ -416,20 +427,19 @@ namespace Mini_Bank_System
 
         static void LoadAccounts()
         {
-            if (File.Exists(AccountsFilePath))
+            if (File.Exists(AccountsFilePath)) // check if the file exists
             {
-                using (StreamReader reader = new StreamReader(AccountsFilePath))
+                using (StreamReader reader = new StreamReader(AccountsFilePath)) // read the file
                 {
                     string line;
-                    while ((line = reader.ReadLine()) != null)
+                    while ((line = reader.ReadLine()) != null) 
                     {
-                        string[] parts = line.Split('|');
-                        accountNames.Add(parts[1]);
-
-                        accountNumbers.Add(int.Parse(parts[0]));
-
-                        balances.Add(double.Parse(parts[2]));
+                            string[] parts = line.Split('|'); // split the line into parts by "|"
+                            accountNumbers.Add(int.Parse(parts[0])); // add the account number to the list
+                            accountNames.Add(parts[1]); // add the account name to the list
+                            balances.Add(double.Parse(parts[2])); // add the balance to the list
                     }
+
                 }
             }
         }
@@ -437,53 +447,53 @@ namespace Mini_Bank_System
 
         static void SaveRequests()
         {
-            using (StreamWriter writer = new StreamWriter(RequestFilePath))
+            using (StreamWriter writer = new StreamWriter(RequestFilePath)) // save the requests in the file
             {
                 foreach (string request in createAccount)
                 {
-                    writer.WriteLine(request);
+                    writer.WriteLine(request); // add the request to the file
                 }
             }
             Console.WriteLine("Requests saved successfully.");
         }
 
-        static void LoadRequests()
-        {
+        static void LoadRequests() // load the requests from the file
+            {
             if (File.Exists(RequestFilePath))
             {
-                using (StreamReader reader = new StreamReader(RequestFilePath))
+                using (StreamReader reader = new StreamReader(RequestFilePath)) 
                 {
                     string line;
-                    while ((line = reader.ReadLine()) != null)
+                    while ((line = reader.ReadLine()) != null) // check if the line is not null
                     {
-                        createAccount.Enqueue(line);
+                        createAccount.Enqueue(line); // add the request to the queue
                     }
                 }
             }
         }
 
         //========== Save and Load Reviews ==============
-        static void SaveReviews()
+        static void SaveReviews() 
         {
-            using (StreamWriter writer = new StreamWriter(ReviewsFilePath))
+            using (StreamWriter writer = new StreamWriter(ReviewsFilePath)) // save the reviews in the file
             {
-                foreach (string review in reviewsStack)
+                foreach (string review in reviewsStack) // loop through the reviews
                 {
-                    writer.WriteLine(review);
+                    writer.WriteLine(review); 
                 }
             }
             Console.WriteLine("Reviews saved successfully.");
         }
         static void LoadReviews()
         {
-            if (File.Exists(ReviewsFilePath))
+            if (File.Exists(ReviewsFilePath)) // check if the file exists
             {
-                using (StreamReader reader = new StreamReader(ReviewsFilePath))
+                using (StreamReader reader = new StreamReader(ReviewsFilePath)) // read the file
                 {
                     string line;
-                    while ((line = reader.ReadLine()) != null)
+                    while ((line = reader.ReadLine()) != null) 
                     {
-                        reviewsStack.Push(line);
+                        reviewsStack.Push(line); // add the review to the stack
                     }
                 }
             }
