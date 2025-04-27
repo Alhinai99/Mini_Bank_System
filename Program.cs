@@ -10,7 +10,7 @@ namespace Mini_Bank_System
         const double MinimumBalance = 100.0; // minimum balance (account cant get lower )
         const string AccountsFilePath = "accounts.txt"; //saving accounts in file
         const string ReviewsFilePath = "reviews.txt"; //saving reviews in file
-
+        const string RequestFilePath = "Requests.txt"; // saving requests in file
         //========== Global lists (parallel)==========
         static List<int> accountNumbers = new List<int>(); // account numbers list
         static List<string> accountNames = new List<string>(); // account names list
@@ -25,6 +25,9 @@ namespace Mini_Bank_System
 
         static void Main(string[] args)
         {
+            LoadAccounts(); // load accounts from file
+            LoadRequests(); // load requests from file
+            LoadReviews(); // load requests from file
             WelcomeMessage();
             systemStart();
         }
@@ -73,7 +76,12 @@ namespace Mini_Bank_System
                         User();
                         break;
                     case "3":
+                        SaveAccounts();
+                        SaveRequests();
+                        SaveReviews();
+                        Console.WriteLine("Thank you for using the Mini Bank System. Goodbye!");
                         ExitSystem = false;
+
                         break;
                     default:
                         Console.WriteLine("Invalid option, please try again.");
@@ -379,6 +387,103 @@ namespace Mini_Bank_System
                 Console.WriteLine("Invalid input.");
                 return -1;
             }
+      
+        
+        
+        
+        
         }
+
+
+
+        //========== Save and Load Accounts & requests ==============
+
+        static void SaveAccounts()
+        {
+            using (StreamWriter writer = new StreamWriter(AccountsFilePath))
+            {
+                for (int i = 0; i < accountNumbers.Count; i++)
+                {
+                    writer.WriteLine($"{accountNumbers[i]}|{accountNames[i]}|{balances[i]}");
+                }
+            }
+        }
+
+
+        static void LoadAccounts()
+        {
+            if (File.Exists(AccountsFilePath))
+            {
+                using (StreamReader reader = new StreamReader(AccountsFilePath))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] parts = line.Split('|');
+                        accountNames.Add(parts[1]);
+
+                        accountNumbers.Add(int.Parse(parts[0]));
+
+                        balances.Add(double.Parse(parts[2]));
+                    }
+                }
+            }
+        }
+
+
+        static void SaveRequests()
+        {
+            using (StreamWriter writer = new StreamWriter(RequestFilePath))
+            {
+                foreach (string request in createAccount)
+                {
+                    writer.WriteLine(request);
+                }
+            }
+        }
+
+        static void LoadRequests()
+        {
+            if (File.Exists(RequestFilePath))
+            {
+                using (StreamReader reader = new StreamReader(RequestFilePath))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        createAccount.Enqueue(line);
+                    }
+                }
+            }
+        }
+
+        //========== Save and Load Reviews ==============
+        static void SaveReviews()
+        {
+            using (StreamWriter writer = new StreamWriter(ReviewsFilePath))
+            {
+                foreach (string review in reviewsStack)
+                {
+                    writer.WriteLine(review);
+                }
+            }
+        }
+        static void LoadReviews()
+        {
+            if (File.Exists(ReviewsFilePath))
+            {
+                using (StreamReader reader = new StreamReader(ReviewsFilePath))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        reviewsStack.Push(line);
+                    }
+                }
+            }
+        }
+
+
+
     }
 }
