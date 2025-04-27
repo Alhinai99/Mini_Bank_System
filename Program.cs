@@ -551,36 +551,47 @@ namespace Mini_Bank_System
 
         static void SaveAccounts()
         {
-            using (StreamWriter writer = new StreamWriter(AccountsFilePath))   
+            try
             {
+                using (StreamWriter writer = new StreamWriter(AccountsFilePath))
                 {
                     for (int i = 0; i < accountNumbers.Count; i++)
                     {
                         writer.WriteLine($"{accountNumbers[i]}|{accountNames[i]}|{balances[i]}");// Save each account's details in the format: AccountNumber|AccountName|Balance
                     }
                 }
+                Console.WriteLine("Accounts saved successfully.");
             }
-            Console.WriteLine("Accounts saved successfully.");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving accounts: {ex.Message}");
+            }
         }
 
 
         static void LoadAccounts()
         {
-            if (File.Exists(AccountsFilePath)) // check if the file exists
-            {
-                using (StreamReader reader = new StreamReader(AccountsFilePath)) // read the file
+            try {
+                if (File.Exists(AccountsFilePath)) // check if the file exists
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null) 
+                    using (StreamReader reader = new StreamReader(AccountsFilePath)) // read the file
                     {
+                        string line;
+                        while ((line = reader.ReadLine()) != null) // check if the line is not null
+                        {
                             string[] parts = line.Split('|'); // split the line into parts by "|"
                             accountNumbers.Add(int.Parse(parts[0])); // add the account number to the list
                             accountNames.Add(parts[1]); // add the account name to the list
                             balances.Add(double.Parse(parts[2])); // add the balance to the list
+                        }
                     }
-
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading accounts: {ex.Message}");
+            }
+            
         }
 
 
@@ -598,16 +609,20 @@ namespace Mini_Bank_System
 
         static void LoadRequests() // load the requests from the file
             {
-            if (File.Exists(RequestFilePath))
+            try
             {
-                using (StreamReader reader = new StreamReader(RequestFilePath)) 
+                using (StreamWriter writer = new StreamWriter(RequestFilePath)) // save the requests in the file
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null) // check if the line is not null
+                    foreach (string request in createAccount)
                     {
-                        createAccount.Enqueue(line); // add the request to the queue
+                        writer.WriteLine(request); // add the request to the file
                     }
                 }
+                Console.WriteLine("Requests saved successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving requests: {ex.Message}");
             }
         }
 
