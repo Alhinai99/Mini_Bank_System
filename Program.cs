@@ -387,26 +387,37 @@ namespace Mini_Bank_System
         }
         static void Deposit()
         {
-            Console.WriteLine("==============");
-            Console.WriteLine("Deposit");
-            Console.WriteLine("==============");
-
-            int accountIndex = CheckAccount(); // check the account exist 
-            if (accountIndex != -1)
+            try
             {
-                Console.Write("Enter deposit amount: ");
-                double amount = Convert.ToDouble(Console.ReadLine()); // input the amount wanted to deposit
+                Console.WriteLine("==============");
+                Console.WriteLine("Deposit");
+                Console.WriteLine("==============");
 
-                if (amount <= 0) // check the amount is positve 
+                int accountIndex = CheckAccount(); // check the account exist 
+                if (accountIndex != -1)
                 {
-                    Console.WriteLine("invaild amount");
-                    return;
+                    Console.Write("Enter deposit amount: ");
+                    if (!double.TryParse(Console.ReadLine(), out double amount)) // check if the input number
+                    {
+                        Console.WriteLine("Invalid amount format.");
+                        return;
+                    }
+
+                    if (amount <= 0) // check the amount is positive 
+                    {
+                        Console.WriteLine("Invalid amount. Amount must be positive.");
+                        return;
+                    }
+
+                    balances[accountIndex] += amount; //add the amount to the current balance and save it
+                    Console.WriteLine($"Deposit successful in account: {accountNames[accountIndex]} with amount: {amount} new balance: {balances[accountIndex]}");
+                    Console.ReadLine();
+                    Console.Clear();
                 }
-              
-                balances[accountIndex] += amount; //add the amount to the current balance and save it
-                Console.WriteLine("Deposit successful in account : " + accountNames[accountIndex]+ " with amount :" + amount + " new balance :" + balances[accountIndex]);
-                Console.ReadLine();
-                Console.Clear();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during deposit: {ex.Message}");
             }
         }
         static void Withdraw()
