@@ -46,20 +46,26 @@ namespace Mini_Bank_System
         // Welcome Message
         static void WelcomeMessage()
         {
-            Console.WriteLine("=========================================");
-            Console.WriteLine("Welcome to the Mini Bank System");
-            Console.WriteLine("=========================================");
-            Console.WriteLine("        ▄████▄        ");
-            Console.WriteLine("      ▄▀       ▀▄      ");
-            Console.WriteLine("     █   BANK   █     ");
-            Console.WriteLine("     █▄▄▄▄▄▄▄▄ ▄█     ");
-            Console.WriteLine("     █   █  █   █    ");
-            Console.WriteLine("     █   █  █   █    ");
-            Console.WriteLine("     █   █  █   █    ");
-            Console.WriteLine("     █▄▄▄█▄▄█▄▄▄█    ");
-            Console.WriteLine("    ▄████████████▄   ");
-            Console.WriteLine("   ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀   ");
-
+            try
+            {
+                Console.WriteLine("=========================================");
+                Console.WriteLine("Welcome to the Mini Bank System");
+                Console.WriteLine("=========================================");
+                Console.WriteLine("        ▄████▄        ");
+                Console.WriteLine("      ▄▀       ▀▄      ");
+                Console.WriteLine("     █   BANK   █     ");
+                Console.WriteLine("     █▄▄▄▄▄▄▄▄ ▄█     ");
+                Console.WriteLine("     █   █  █   █    ");
+                Console.WriteLine("     █   █  █   █    ");
+                Console.WriteLine("     █   █  █   █    ");
+                Console.WriteLine("     █▄▄▄█▄▄█▄▄▄█    ");
+                Console.WriteLine("    ▄████████████▄   ");
+                Console.WriteLine("   ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀   ");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error displaying welcome message: {ex.Message}");
+            }
         }
 
 
@@ -70,36 +76,40 @@ namespace Mini_Bank_System
 
             while (ExitSystem != false)
             {
-
-                // Main Menu choose betwen admin and user
-                Console.WriteLine("Please select role: ");
-                Console.WriteLine("1. Admin ");
-                Console.WriteLine("2. User ");
-                Console.WriteLine("3. Exit ");
-                string role = Console.ReadLine();
-
-                switch (role)
+                try
                 {
-                    case "1":
-                        Admin();
-                        break;
-                    case "2":
-                        User();
-                        break;
-                    case "3":
-                        SaveAccounts();// save accounts in file before exit
-                        SaveRequests();// save requests in file before exit
-                        SaveReviews();// save reviews in file before exit
-                        Console.WriteLine("Thank you for using the Mini Bank System. Goodbye!");
-                        ExitSystem = false; // exit the system by return false
+                    // Main Menu choose betwen admin and user
+                    Console.WriteLine("Please select role: ");
+                    Console.WriteLine("1. Admin ");
+                    Console.WriteLine("2. User ");
+                    Console.WriteLine("3. Exit ");
+                    string role = Console.ReadLine();
 
-                        break;
-                    default:
-                        Console.WriteLine("Invalid option, please try again."); // if the user input invalid option
-                        break;
+                    switch (role)
+                    {
+                        case "1":
+                            Admin();
+                            break;
+                        case "2":
+                            User();
+                            break;
+                        case "3":
+                            SaveAccounts();// save accounts in file before exit
+                            SaveRequests();// save requests in file before exit
+                            SaveReviews();// save reviews in file before exit
+                            Console.WriteLine("Thank you for using the Mini Bank System. Goodbye!");
+                            ExitSystem = false; // exit the system by return false
+                            break;
+                        default:
+                            Console.WriteLine("Invalid option, please try again."); // if the user input invalid option
+                            break;
+                    }
                 }
-
-
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                    Console.WriteLine("Please try again.");
+                }
             }
         }
 
