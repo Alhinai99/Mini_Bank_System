@@ -246,7 +246,7 @@ namespace Mini_Bank_System
         {
             try
             {
-                if (accountNumbers.Count == 0)
+                if (accountNumbers.Count == 0) // check if there is no accounts
                 {
                     Console.WriteLine("No accounts available.");
                 }
@@ -275,18 +275,16 @@ namespace Mini_Bank_System
         {
             try
             {
-                if (accountNumbers.Count == 0) // check if there is no accounts
+                if (reviewsStack.Count == 0) // check if there is no reviews
                 {
-                    Console.WriteLine("No accounts available.");
+                    Console.WriteLine("No reviews available.");
                 }
                 else
                 {
-                    for (int i = 0; i < accountNumbers.Count; i++) // loop to view the accounts lists
+                    foreach (string review in reviewsStack) // loop to view the reviews
                     {
-                        Console.WriteLine("account number :" + accountNumbers[i]);
-                        Console.WriteLine(" Name : " + accountNames[i]);
-                        Console.WriteLine("Balance :" + balances[i]);
-                        Console.WriteLine("====================================");
+                        Console.WriteLine(review);
+                        Console.WriteLine("====================================\n");
                     }
                 }
                 Console.ReadLine();
@@ -294,7 +292,7 @@ namespace Mini_Bank_System
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error viewing accounts: {ex.Message}");
+                Console.WriteLine($"Error viewing reviews: {ex.Message}");
             }
         }
         // Process Requests
