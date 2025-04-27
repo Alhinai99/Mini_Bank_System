@@ -244,16 +244,31 @@ namespace Mini_Bank_System
         // View Accounts
         static void ViewAccounts()
         {
-            for (int i = 0; i < accountNumbers.Count; i++) // loop to view the accounts lists
+            try
             {
-                Console.WriteLine("account number :" +accountNumbers[i]);
-                Console.WriteLine(" Name : "+ accountNames[i]);
-                Console.WriteLine("Balance :"+balances[i]);
-                Console.WriteLine("====================================");
+                if (createAccount.Count == 0) // check if there is reuquests by checking the count of (creatAccount)
+                {
+                    Console.WriteLine("No pending account requests.");
+                }
+                else
+                {
+                    foreach (string request in createAccount) // loop through the requests
+                    {
+                        string[] parts = request.Split('|'); // split the request into name and national ID by "|"
+                        if (parts.Length >= 2)
+                        {
+                            Console.WriteLine($"Name: {parts[0]}, National ID: {parts[1]}");
+                            Console.WriteLine("====================================");
+                        }
+                    }
+                }
                 Console.ReadLine();
                 Console.Clear();
             }
-
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error viewing requests: {ex.Message}");
+            }
         }
         // View Reviews
         static void ViewReviews()
