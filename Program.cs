@@ -422,23 +422,49 @@ namespace Mini_Bank_System
         }
         static void Withdraw()
         {
-            Console.WriteLine("==============");
-            Console.WriteLine("Withdraw");
-            Console.WriteLine("==============");
-            int accountIndex = CheckAccount(); // check the account exist and return the index of the account
-            if (accountIndex != -1) 
+            try
             {
-                Console.Write("Enter withdraw amount: ");
-                double amount = Convert.ToDouble(Console.ReadLine()); // eneter the amount to withdraw
-                if (amount <= 0 || amount > balances[accountIndex] || balances[accountIndex]-amount < MinimumBalance)
+                Console.WriteLine("==============");
+                Console.WriteLine("Withdraw");
+                Console.WriteLine("==============");
+                int accountIndex = CheckAccount(); // check the account exist and return the index of the account
+                if (accountIndex != -1)
                 {
-                    Console.WriteLine("Invalid amount.");
-                    return;
+                    Console.Write("Enter withdraw amount: ");
+                    if (!double.TryParse(Console.ReadLine(), out double amount)) // check if the input is anumber
+                    {
+                        Console.WriteLine("Invalid amount format.");
+                        return;
+                    }
+
+                    if (amount <= 0) // check the amount is positive
+                    {
+                        Console.WriteLine("Amount must be positive.");
+                        return;
+                    }
+
+                    if (amount > balances[accountIndex]) // check if the amount is greater than the current balance
+                    {
+                        Console.WriteLine("amount to wtihdraw are more then avalible balance.");
+                        return;
+                    }
+ 
+
+                    if (balances[accountIndex] - amount < MinimumBalance) // check if the amount will leave the balance below the minimum required
+                    {
+                        Console.WriteLine($"Withdrawal would leave balance below minimum required ({MinimumBalance}).");
+                        return;
+                    }
+
+                    balances[accountIndex] -= amount; // - the amount from current balance
+                    Console.WriteLine($"Withdrawal successful. New balance: {balances[accountIndex]}");
+                    Console.ReadLine();
+                    Console.Clear();
                 }
-                balances[accountIndex] -= amount; // - the amount from current balance
-                Console.WriteLine($"Withdrawal successful. New balance: {balances[accountIndex]}");
-                Console.ReadLine();
-                Console.Clear();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during withdrawal: {ex.Message}");
             }
         }
 
@@ -446,15 +472,21 @@ namespace Mini_Bank_System
 
         static void checkBalance()
         {
-            int index = CheckAccount(); // check the account exist and return the index
-            if (index == -1) return;
+            try
+            {
+                int index = CheckAccount(); // check the account exist and return the index
+                if (index == -1) return;
 
-            Console.WriteLine($"Account Number: {accountNumbers[index]}"); // display account number
-            Console.WriteLine($"Name: {accountNames[index]}");// display account name
-            Console.WriteLine($"Current Balance: {balances[index]}");// display account balance
-            Console.ReadLine();
-            Console.Clear();
-
+                Console.WriteLine($"Account Number: {accountNumbers[index]}"); // display account number
+                Console.WriteLine($"Name: {accountNames[index]}");// display account name
+                Console.WriteLine($"Current Balance: {balances[index]}");// display account balance
+                Console.ReadLine();
+                Console.Clear();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error checking balance: {ex.Message}");
+            }
         }
         static void SubmitReview()
         {
