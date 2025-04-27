@@ -300,30 +300,43 @@ namespace Mini_Bank_System
         // Process Requests
         static void ProcessRequest()
         {
-            if (createAccount.Count == 0) // check if there is reuquests by checking the count of (creatAccount)
+            try
             {
-                Console.WriteLine("No pending account requests.");
+                if (createAccount.Count == 0) // check if there is reuquests by checking the count of (creatAccount)
+                {
+                    Console.WriteLine("No pending account requests.");
+                    Console.ReadLine();
+                    Console.Clear();
+                    return; // return to stop the function 
+                }
+
+                string request = createAccount.Dequeue(); // get the first request in the queue (FIFO)
+                string[] parts = request.Split('|'); // check for '|' to split the name from the ID
+                if (parts.Length < 2)
+                {
+                    Console.WriteLine("Invalid request format.");
+                    return;
+                }
+
+                string name = parts[0]; // first part is the name
+                string nationalID = parts[1]; // second part it the ID
+
+                int newAccountNumber = lastAccountNumber + 1; // to give the account number (the last account number + 1)
+
+                accountNumbers.Add(newAccountNumber); // add account number to the list (accountNumber)
+                accountNames.Add(name); // add account name to the list (accountNames)
+                balances.Add(0.0); // add the account balance to the list (balances)
+
+                lastAccountNumber = newAccountNumber;
+
+                Console.WriteLine($"Account created for {name} with Account Number: {newAccountNumber}");
                 Console.ReadLine();
                 Console.Clear();
-                return; // return to stop the function 
             }
-
-            string request = createAccount.Dequeue(); // get the first request in the queue (FIFO)
-            string[] parts = request.Split('|'); // check for '|' to split the name from the ID
-            string name = parts[0]; // first part is the name
-            string nationalID = parts[1]; // second part it the ID
-
-            int newAccountNumber = lastAccountNumber + 1; // to give the account number (the last account number + 1)
-
-            accountNumbers.Add(newAccountNumber); // add account number to the list (accountNumber)
-            accountNames.Add(name); // add account name to the list (accountNames)
-            balances.Add(0.0); // add the account balance to the list (balances)
-
-            lastAccountNumber = newAccountNumber; 
-
-            Console.WriteLine($"Account created for {name} with Account Number: {newAccountNumber}"); 
-            Console.ReadLine();
-            Console.Clear();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error processing request: {ex.Message}");
+            }
         }
 
 
