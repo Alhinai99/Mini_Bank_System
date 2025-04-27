@@ -173,42 +173,49 @@ namespace Mini_Bank_System
             Console.Clear();
             while (UserMenu != true)
             {
-                Console.WriteLine("\n=============================");
-                Console.WriteLine("| Option    | Description |");
-                Console.WriteLine("===========================");
-                Console.WriteLine("|   [1]     | Create Account |");
-                Console.WriteLine("|   [2]     | Deposit        |");
-                Console.WriteLine("|   [3]     | withdraw       |");
-                Console.WriteLine("|   [4]     | Check Balance  |");
-                Console.WriteLine("|   [5]     | Submit Review  |");
-                Console.WriteLine("|   [6]     | Exit           |");
-                Console.WriteLine("============================");
-                string option = Console.ReadLine();
-                switch (option)
+                try
                 {
-                    case "1":
-                        CreateAccount(); // create account
-                        break;
-                    case "2":
-                        Deposit(); // deposit money
-                        break;
-                    case"3":
-                        Withdraw(); // withdraw money
-                        break;
-
-                    case "4":
-                        checkBalance(); // check balance
-                        break;
-                    case "5":
-                        SubmitReview();     // submit review
-                        break;
-                    case "6":
-                        UserMenu = true; // exit the user menu (finish the loop by return true)
-                        Console.Clear();
-                        break;
-                    default:
-                        Console.WriteLine("Invalid option, please try again."); // if the user input invalid option
-                        break;
+                    Console.WriteLine("\n=============================");
+                    Console.WriteLine("| Option    | Description |");
+                    Console.WriteLine("===========================");
+                    Console.WriteLine("|   [1]     | Create Account |");
+                    Console.WriteLine("|   [2]     | Deposit        |");
+                    Console.WriteLine("|   [3]     | withdraw       |");
+                    Console.WriteLine("|   [4]     | Check Balance  |");
+                    Console.WriteLine("|   [5]     | Submit Review  |");
+                    Console.WriteLine("|   [6]     | Exit           |");
+                    Console.WriteLine("============================");
+                    string option = Console.ReadLine();
+                    switch (option)
+                    {
+                        case "1":
+                            CreateAccount(); // create account
+                            break;
+                        case "2":
+                            Deposit(); // deposit money
+                            break;
+                        case "3":
+                            Withdraw(); // withdraw money
+                            break;
+                        case "4":
+                            checkBalance(); // check balance
+                            break;
+                        case "5":
+                            SubmitReview();     // submit review
+                            break;
+                        case "6":
+                            UserMenu = true; // exit the user menu (finish the loop by return true)
+                            Console.Clear();
+                            break;
+                        default:
+                            Console.WriteLine("Invalid option, please try again."); // if the user input invalid option
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred in user menu: {ex.Message}");
+                    Console.WriteLine("Please try again.");
                 }
             }
         }
