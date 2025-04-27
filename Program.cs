@@ -28,8 +28,8 @@ namespace Mini_Bank_System
             LoadAccounts(); // load accounts from file
             LoadRequests(); // load requests from file
             LoadReviews(); // load requests from file
-            WelcomeMessage();
-            systemStart();
+            WelcomeMessage(); // welcome message
+            systemStart(); // start the system
         }
         // =========== Main Menu ========================
         //===========================================
@@ -52,7 +52,9 @@ namespace Mini_Bank_System
             Console.WriteLine("   ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀   ");
 
         }
-        //system start function
+
+
+        // System Start
         static void systemStart()
         {
             bool ExitSystem = true;
@@ -60,7 +62,7 @@ namespace Mini_Bank_System
             while (ExitSystem != false)
             {
 
-
+                // Main Menu choose betwen admin and user
                 Console.WriteLine("Please select role: ");
                 Console.WriteLine("1. Admin ");
                 Console.WriteLine("2. User ");
@@ -76,15 +78,15 @@ namespace Mini_Bank_System
                         User();
                         break;
                     case "3":
-                        SaveAccounts();
-                        SaveRequests();
-                        SaveReviews();
+                        SaveAccounts();// save accounts in file before exit
+                        SaveRequests();// save requests in file before exit
+                        SaveReviews();// save reviews in file before exit
                         Console.WriteLine("Thank you for using the Mini Bank System. Goodbye!");
-                        ExitSystem = false;
+                        ExitSystem = false; // exit the system by return false
 
                         break;
                     default:
-                        Console.WriteLine("Invalid option, please try again.");
+                        Console.WriteLine("Invalid option, please try again."); // if the user input invalid option
                         break;
                 }
 
@@ -97,7 +99,7 @@ namespace Mini_Bank_System
         {
             bool AdminMenu = false;
             Console.Clear();
-            while (AdminMenu != true)
+            while (AdminMenu != true) // loop until the user exit
             {
                 Console.WriteLine("===========================");
                 Console.WriteLine("Welcome Admin");
@@ -116,24 +118,24 @@ namespace Mini_Bank_System
                 switch (option)
                 {
                     case "1":
-                        ViweRequest();
+                        ViweRequest(); // view requests
                         break;
                     case "2":
-                        ViewAccounts();
+                        ViewAccounts(); // view accounts
                         break;
                     case "3":
-                        ViewReviews();
+                        ViewReviews(); // view reviews
                         break;
                     case "4":
-                        ProcessRequest();
+                        ProcessRequest(); // process requests
                         break;
                     case "5":
-                        AdminMenu = true;
+                        AdminMenu = true; // exit the admin menu (finish the loop by return true)
                         Console.Clear();
                         break;
 
                     default:
-                        Console.WriteLine("Invalid option, please try again.");
+                        Console.WriteLine("Invalid option, please try again."); // if the user input invalid option
                         break;
                 }
             }
@@ -160,27 +162,27 @@ namespace Mini_Bank_System
                 switch (option)
                 {
                     case "1":
-                        CreateAccount();
+                        CreateAccount(); // create account
                         break;
                     case "2":
-                        Deposit();
+                        Deposit(); // deposit money
                         break;
                     case"3":
-                        Withdraw();
+                        Withdraw(); // withdraw money
                         break;
 
                     case "4":
-                        checkBalance();
+                        checkBalance(); // check balance
                         break;
                     case "5":
-                        SubmitReview();
+                        SubmitReview();     // submit review
                         break;
                     case "6":
-                        UserMenu = true;
+                        UserMenu = true; // exit the user menu (finish the loop by return true)
                         Console.Clear();
                         break;
                     default:
-                        Console.WriteLine("Invalid option, please try again.");
+                        Console.WriteLine("Invalid option, please try again."); // if the user input invalid option
                         break;
                 }
             }
@@ -195,10 +197,10 @@ namespace Mini_Bank_System
         {
 
             
-                foreach (string request in createAccount)
-                {
-                    string[] parts = request.Split('|');
-                    Console.WriteLine($"Name: {parts[0]}, National ID: {parts[1]}");
+                foreach (string request in createAccount) // loop through the requests
+            {
+                    string[] parts = request.Split('|'); // split the request into name and national ID by "|"
+                Console.WriteLine($"Name: {parts[0]}, National ID: {parts[1]}");
                     Console.WriteLine("====================================");
                  }
 
@@ -210,7 +212,7 @@ namespace Mini_Bank_System
         // View Accounts
         static void ViewAccounts()
         {
-            for (int i = 0; i < accountNumbers.Count; i++)
+            for (int i = 0; i < accountNumbers.Count; i++) // loop to view the accounts lists
             {
                 Console.WriteLine("account number :" +accountNumbers[i]);
                 Console.WriteLine(" Name : "+ accountNames[i]);
@@ -224,7 +226,7 @@ namespace Mini_Bank_System
         // View Reviews
         static void ViewReviews()
         {
-            foreach (string review in reviewsStack)
+            foreach (string review in reviewsStack) // loop to view the reviews
             {
                 Console.WriteLine(review);
                 Console.WriteLine("====================================");
@@ -235,28 +237,28 @@ namespace Mini_Bank_System
         // Process Requests
         static void ProcessRequest()
         {
-            if (createAccount.Count == 0)
+            if (createAccount.Count == 0) // check if there is reuquests by checking the count of (creatAccount)
             {
                 Console.WriteLine("No pending account requests.");
                 Console.ReadLine();
                 Console.Clear();
-                return;
+                return; // return to stop the function 
             }
 
-            string request = createAccount.Dequeue();
-            string[] parts = request.Split('|');
-            string name = parts[0];
-            string nationalID = parts[1];
+            string request = createAccount.Dequeue(); // get the first request in the queue (FIFO)
+            string[] parts = request.Split('|'); // check for '|' to split the name from the ID
+            string name = parts[0]; // first part is the name
+            string nationalID = parts[1]; // second part it the ID
 
-            int newAccountNumber = lastAccountNumber + 1;
+            int newAccountNumber = lastAccountNumber + 1; // to give the account number (the last account number + 1)
 
-            accountNumbers.Add(newAccountNumber);
-            accountNames.Add(name);
-            balances.Add(0.0);
+            accountNumbers.Add(newAccountNumber); // add account number to the list (accountNumber)
+            accountNames.Add(name); // add account name to the list (accountNames)
+            balances.Add(0.0); // add the account balance to the list (balances)
 
-            lastAccountNumber = newAccountNumber;
+            lastAccountNumber = newAccountNumber; 
 
-            Console.WriteLine($"Account created for {name} with Account Number: {newAccountNumber}");
+            Console.WriteLine($"Account created for {name} with Account Number: {newAccountNumber}"); 
             Console.ReadLine();
             Console.Clear();
         }
@@ -266,7 +268,8 @@ namespace Mini_Bank_System
         //====================================================
 
 
-        static void CreateAccount()
+        // Creat Account 
+        static void CreateAccount() 
         {
 
             Console.WriteLine("Create Account");
@@ -276,9 +279,9 @@ namespace Mini_Bank_System
             Console.WriteLine("Enter Your National ID : ");
             string ID = Console.ReadLine();
 
-            string Request = Name + "|" + ID;
+            string Request = Name + "|" + ID; // save the name and the ID together and split between them using '|'
 
-            createAccount.Enqueue(Request);
+            createAccount.Enqueue(Request); // add the request in queue (createAccount)
             Console.WriteLine("Account request submitted successfully.");
             Console.WriteLine("Please wait for admin approval.");
             Console.ReadLine();
@@ -292,19 +295,19 @@ namespace Mini_Bank_System
             Console.WriteLine("Deposit");
             Console.WriteLine("==============");
 
-            int accountIndex = CheckAccount();
+            int accountIndex = CheckAccount(); // check the account exist 
             if (accountIndex != -1)
             {
                 Console.Write("Enter deposit amount: ");
-                double amount = Convert.ToDouble(Console.ReadLine());
+                double amount = Convert.ToDouble(Console.ReadLine()); // input the amount wanted to deposit
 
-                if (amount <= 0)
+                if (amount <= 0) // check the amount is positve 
                 {
                     Console.WriteLine("invaild amount");
                     return;
                 }
               
-                balances[accountIndex] += amount;
+                balances[accountIndex] += amount; //add the amount to the current balance and save it
                 Console.WriteLine("Deposit successful in account : " + accountNames[accountIndex]+ " with amount :" + amount + " new balance :" + balances[accountIndex]);
                 Console.ReadLine();
                 Console.Clear();
@@ -315,17 +318,17 @@ namespace Mini_Bank_System
             Console.WriteLine("==============");
             Console.WriteLine("Withdraw");
             Console.WriteLine("==============");
-            int accountIndex = CheckAccount();
-            if (accountIndex != -1)
+            int accountIndex = CheckAccount(); // check the account exist and return the index of the account
+            if (accountIndex != -1) 
             {
                 Console.Write("Enter withdraw amount: ");
-                double amount = Convert.ToDouble(Console.ReadLine());
+                double amount = Convert.ToDouble(Console.ReadLine()); // eneter the amount to withdraw
                 if (amount <= 0 || amount > balances[accountIndex] || balances[accountIndex]-amount < MinimumBalance)
                 {
                     Console.WriteLine("Invalid amount.");
                     return;
                 }
-                balances[accountIndex] -= amount;
+                balances[accountIndex] -= amount; // - the amount from current balance
                 Console.WriteLine($"Withdrawal successful. New balance: {balances[accountIndex]}");
                 Console.ReadLine();
                 Console.Clear();
@@ -336,12 +339,12 @@ namespace Mini_Bank_System
 
         static void checkBalance()
         {
-            int index = CheckAccount();
+            int index = CheckAccount(); // check the account exist and return the index
             if (index == -1) return;
 
-            Console.WriteLine($"Account Number: {accountNumbers[index]}");
-            Console.WriteLine($"Name: {accountNames[index]}");
-            Console.WriteLine($"Current Balance: {balances[index]}");
+            Console.WriteLine($"Account Number: {accountNumbers[index]}"); // display account number
+            Console.WriteLine($"Name: {accountNames[index]}");// display account name
+            Console.WriteLine($"Current Balance: {balances[index]}");// display account balance
             Console.ReadLine();
             Console.Clear();
 
@@ -350,12 +353,12 @@ namespace Mini_Bank_System
         {
             Console.WriteLine("please write your Review :");
             string reivew = Console.ReadLine();
-            if (reivew == "")
+            if (reivew == "") //if the input was empty exit return
             {
                 return;
             }
             else { 
-                reviewsStack.Push(reivew);
+                reviewsStack.Push(reivew); // add the review to a stack
                 Console.WriteLine("Review submited");
             }
         }
@@ -407,6 +410,7 @@ namespace Mini_Bank_System
                     writer.WriteLine($"{accountNumbers[i]}|{accountNames[i]}|{balances[i]}");
                 }
             }
+            Console.WriteLine("Accounts saved successfully.");
         }
 
 
@@ -440,6 +444,7 @@ namespace Mini_Bank_System
                     writer.WriteLine(request);
                 }
             }
+            Console.WriteLine("Requests saved successfully.");
         }
 
         static void LoadRequests()
@@ -467,6 +472,7 @@ namespace Mini_Bank_System
                     writer.WriteLine(review);
                 }
             }
+            Console.WriteLine("Reviews saved successfully.");
         }
         static void LoadReviews()
         {
@@ -481,6 +487,7 @@ namespace Mini_Bank_System
                     }
                 }
             }
+            
         }
 
 
