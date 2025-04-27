@@ -627,34 +627,48 @@ namespace Mini_Bank_System
         }
 
         //========== Save and Load Reviews ==============
-        static void SaveReviews() 
+        static void SaveReviews()
         {
-            using (StreamWriter writer = new StreamWriter(ReviewsFilePath)) // save the reviews in the file
+            try
             {
-                foreach (string review in reviewsStack) // loop through the reviews
+                using (StreamWriter writer = new StreamWriter(ReviewsFilePath)) // save the reviews in the file
                 {
-                    writer.WriteLine(review); 
+                    foreach (string review in reviewsStack) // loop through the reviews
+                    {
+                        writer.WriteLine(review);
+                    }
                 }
+                Console.WriteLine("Reviews saved successfully.");
             }
-            Console.WriteLine("Reviews saved successfully.");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving reviews: {ex.Message}");
+            }
         }
+
         static void LoadReviews()
         {
-            if (File.Exists(ReviewsFilePath)) // check if the file exists
+            try
             {
-                using (StreamReader reader = new StreamReader(ReviewsFilePath)) // read the file
+                if (File.Exists(ReviewsFilePath)) // check if the file exists
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null) 
+                    using (StreamReader reader = new StreamReader(ReviewsFilePath)) // read the file
                     {
-                        reviewsStack.Push(line); // add the review to the stack
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            if (!string.IsNullOrWhiteSpace(line))
+                            {
+                                reviewsStack.Push(line); // add the review to the stack
+                            }
+                        }
                     }
                 }
             }
-            
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading reviews: {ex.Message}");
+            }
         }
-
-
-
     }
 }
