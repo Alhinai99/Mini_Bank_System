@@ -120,42 +120,48 @@ namespace Mini_Bank_System
             Console.Clear();
             while (AdminMenu != true) // loop until the user exit
             {
-                Console.WriteLine("===========================");
-                Console.WriteLine("Welcome Admin");
-
-
-                Console.WriteLine("===============================");
-                Console.WriteLine("| Option      | Description    |");
-                Console.WriteLine("=============================");
-                Console.WriteLine("|   [1]     | View Requests    |");
-                Console.WriteLine("|   [2]     | View Accounts    |");
-                Console.WriteLine("|   [3]     | View Reviews     |");
-                Console.WriteLine("|   [4]     | process Requests |");
-                Console.WriteLine("|   [5]     | Exit             |");
-                Console.WriteLine("============================");
-                string option = Console.ReadLine();
-                switch (option)
+                try
                 {
-                    case "1":
-                        ViweRequest(); // view requests
-                        break;
-                    case "2":
-                        ViewAccounts(); // view accounts
-                        break;
-                    case "3":
-                        ViewReviews(); // view reviews
-                        break;
-                    case "4":
-                        ProcessRequest(); // process requests
-                        break;
-                    case "5":
-                        AdminMenu = true; // exit the admin menu (finish the loop by return true)
-                        Console.Clear();
-                        break;
+                    Console.WriteLine("===========================");
+                    Console.WriteLine("Welcome Admin");
 
-                    default:
-                        Console.WriteLine("Invalid option, please try again."); // if the user input invalid option
-                        break;
+                    Console.WriteLine("===============================");
+                    Console.WriteLine("| Option      | Description    |");
+                    Console.WriteLine("=============================");
+                    Console.WriteLine("|   [1]     | View Requests    |");
+                    Console.WriteLine("|   [2]     | View Accounts    |");
+                    Console.WriteLine("|   [3]     | View Reviews     |");
+                    Console.WriteLine("|   [4]     | process Requests |");
+                    Console.WriteLine("|   [5]     | Exit             |");
+                    Console.WriteLine("============================");
+                    string option = Console.ReadLine();
+                    switch (option)
+                    {
+                        case "1":
+                            ViweRequest(); // view requests
+                            break;
+                        case "2":
+                            ViewAccounts(); // view accounts
+                            break;
+                        case "3":
+                            ViewReviews(); // view reviews
+                            break;
+                        case "4":
+                            ProcessRequest(); // process requests
+                            break;
+                        case "5":
+                            AdminMenu = true; // exit the admin menu (finish the loop by return true)
+                            Console.Clear();
+                            break;
+                        default:
+                            Console.WriteLine("Invalid option, please try again."); // if the user input invalid option
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred in admin menu: {ex.Message}");
+                    Console.WriteLine("Please try again.");
                 }
             }
         }
